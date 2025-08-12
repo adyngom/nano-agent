@@ -110,6 +110,24 @@ class ProviderConfig:
                 model_settings=model_settings
             )
         
+        elif provider == "google":
+            # Use OpenAI-compatible endpoint for Google Gemini
+            logger.debug(f"Creating Google Gemini agent with model: {model}")
+            google_client = AsyncOpenAI(
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+                api_key=os.getenv("GOOGLE_API_KEY")
+            )
+            return Agent(
+                name=name,
+                instructions=instructions,
+                tools=tools,
+                model=OpenAIChatCompletionsModel(
+                    model=model,
+                    openai_client=google_client
+                ),
+                model_settings=model_settings
+            )
+        
         elif provider == "ollama":
             # Use OpenAI-compatible endpoint for Ollama
             logger.debug(f"Creating Ollama agent with model: {model}")
