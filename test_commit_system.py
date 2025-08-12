@@ -10,9 +10,11 @@ import subprocess
 from pathlib import Path
 
 # Add the hooks directory to the path so we can import modules
-sys.path.append(str(Path(__file__).parent / '.claude' / 'hooks'))
+hooks_dir = Path(__file__).parent / '.claude' / 'hooks'
+sys.path.append(str(hooks_dir))
+sys.path.append(str(hooks_dir / 'utils'))
 
-from utils.commit_templates import (
+from commit_templates import (
     CommitTemplates,
     create_atomic_commit_message,
     create_comprehensive_commit_message
