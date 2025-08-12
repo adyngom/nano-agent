@@ -176,7 +176,7 @@ This architecture ensures fair comparison by using the same OpenAI Agent SDK for
 
 ## Features
 
-- 🤖 **Multi-Provider Support**: Seamlessly switch between OpenAI (GPT-5), Anthropic (Claude), and Ollama (local models)
+- 🤖 **Multi-Provider Support**: Seamlessly switch between OpenAI (GPT-5), Anthropic (Claude), Google (Gemini), and Ollama (local models)
 - 🔧 **File System Operations**: Read, write, edit, and analyze files autonomously
 - 🏗️ **Nested Agent Architecture**: MCP server spawns internal agents for task execution
 - 🎯 **Unified Interface**: All providers use the same OpenAI SDK for consistency
