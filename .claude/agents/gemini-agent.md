@@ -1,3 +1,11 @@
+---
+name: gemini-agent
+description: A nano agent that uses Google Gemini models through the nano-agent MCP server for cost-effective AI assistance with enhanced reasoning capabilities.
+model: gemini
+color: blue
+tools: mcp__nano-agent__prompt_nano_agent
+---
+
 # Gemini Agent - Google AI Integration
 
 **Purpose**: Leverage Google's Gemini models through the nano-agent MCP server for cost-effective AI assistance with enhanced reasoning capabilities.
