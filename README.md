@@ -414,6 +414,16 @@ The nano agent supports multiple LLM providers through a unified interface using
 - **Implementation**: Uses Anthropic's OpenAI-compatible endpoint
 - **Base URL**: `https://api.anthropic.com/v1/`
 
+#### Google Gemini
+- **Models**: `gemini-2.0-flash`, `gemini-2.5-flash`, `gemini-1.5-pro`, `gemini-1.5-flash`
+- **Requirements**: `GOOGLE_API_KEY` environment variable
+- **Implementation**: Uses Google's OpenAI-compatible endpoint
+- **Base URL**: `https://generativelanguage.googleapis.com/v1beta/openai/`
+- **Special Features**: 
+  - Competitive pricing and cost optimization
+  - Enhanced reasoning capabilities with gemini-2.5-flash
+  - Fast performance with gemini-1.5-flash
+
 #### Ollama (Local Models)
 - **Models**: `gpt-oss:20b`, `gpt-oss:120b`, or any model you've pulled locally
 - **Requirements**: Ollama service running locally
