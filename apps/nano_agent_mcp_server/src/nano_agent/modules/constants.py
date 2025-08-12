@@ -49,6 +49,7 @@ MODEL_INFO = {
 PROVIDER_REQUIREMENTS = {
     "openai": "OPENAI_API_KEY",
     "anthropic": "ANTHROPIC_API_KEY",
+    "google": "GOOGLE_API_KEY",
     "ollama": None,  # No API key needed
 }
 
