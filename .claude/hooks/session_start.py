@@ -98,6 +98,148 @@ def get_recent_issues():
     return None
 
 
+def is_coding_task(prompt):
+    """Detect if the prompt indicates a coding/development task."""
+    if not prompt or len(prompt.strip()) < 10:
+        return False
+        
+    prompt_lower = prompt.lower()
+    
+    # Coding action keywords
+    coding_keywords = [
+        'implement', 'fix', 'add', 'create', 'refactor', 'update', 'modify', 
+        'build', 'develop', 'code', 'debug', 'optimize', 'enhance', 'extend',
+        'integrate', 'configure', 'setup', 'install', 'deploy', 'migrate',
+        'test', 'write tests', 'unit test', 'integration test'
+    ]
+    
+    # Technical patterns
+    technical_patterns = [
+        'function', 'class', 'method', 'api', 'endpoint', 'database', 'sql',
+        'component', 'module', 'service', 'library', 'framework', 'package',
+        'bug', 'issue #', 'error', 'exception', 'performance', 'security'
+    ]
+    
+    # File/code references
+    code_patterns = [
+        '.py', '.js', '.ts', '.java', '.go', '.rs', '.cpp', '.c', '.rb',
+        '.php', '.html', '.css', '.json', '.yaml', '.yml', '.md', '.sql',
+        'src/', 'lib/', 'test/', 'spec/', 'apps/', 'components/'
+    ]
+    
+    # Check for coding keywords
+    if any(keyword in prompt_lower for keyword in coding_keywords):
+        return True
+    
+    # Check for technical patterns
+    if any(pattern in prompt_lower for pattern in technical_patterns):
+        return True
+        
+    # Check for file/code references
+    if any(pattern in prompt_lower for pattern in code_patterns):
+        return True
+    
+    # Exclude simple questions and greetings
+    simple_patterns = [
+        'hello', 'hi', 'how are', 'what is', 'explain', 'help me understand',
+        'can you tell', 'show me', 'what does', 'where is', 'who is'
+    ]
+    
+    # If it starts with simple question patterns, likely not a coding task
+    if any(prompt_lower.strip().startswith(pattern) for pattern in simple_patterns):
+        return False
+    
+    return False
+
+
+def extract_task_description(prompt):
+    """Extract a clean task description from the user prompt."""
+    if not prompt:
+        return None
+    
+    # Clean up the prompt
+    clean_prompt = prompt.strip()
+    
+    # Remove common prefixes
+    prefixes_to_remove = [
+        'can you ', 'could you ', 'please ', 'i need to ', 'help me ',
+        'i want to ', 'i would like to ', 'let\'s ', 'we need to '
+    ]
+    
+    clean_lower = clean_prompt.lower()
+    for prefix in prefixes_to_remove:
+        if clean_lower.startswith(prefix):
+            clean_prompt = clean_prompt[len(prefix):]
+            break
+    
+    # Capitalize first letter
+    clean_prompt = clean_prompt.strip()
+    if clean_prompt:
+        clean_prompt = clean_prompt[0].upper() + clean_prompt[1:]
+    
+    return clean_prompt
+
+
+def generate_adw_id():
+    """Generate a unique ADW ID based on timestamp."""
+    return datetime.now().strftime('%Y%m%d_%H%M%S')
+
+
+def create_auto_plan(prompt):
+    """Create a plan automatically for coding tasks."""
+    try:
+        # Generate unique ADW ID
+        adw_id = generate_adw_id()
+        
+        # Extract clean task description
+        task_description = extract_task_description(prompt)
+        if not task_description:
+            return None
+        
+        # Use the plan command to create the plan
+        # We'll invoke the plan command through subprocess
+        plan_command = [
+            'uv', 'run', '-c', 
+            f'cd /Users/zero2hero/Code/Liveprojects/nano-agent && claude-code /plan {adw_id} "{task_description}"'
+        ]
+        
+        # For now, we'll create a simple announcement that a plan should be created
+        # The actual plan creation will be handled by Claude Code when it processes this
+        return {
+            "auto_plan_suggestion": {
+                "adw_id": adw_id,
+                "task_description": task_description,
+                "plan_command": f"/plan {adw_id} \"{task_description}\"",
+                "detected_as_coding_task": True
+            }
+        }
+        
+    except Exception as e:
+        # If plan creation fails, don't break the session
+        return {
+            "auto_plan_error": {
+                "error": str(e),
+                "fallback": "Consider running /plan manually for this coding task"
+            }
+        }
+
+
+def get_user_prompt_from_input(input_data):
+    """Extract user prompt from session input data."""
+    try:
+        # The user prompt might be in different fields depending on session type
+        if 'user_prompt' in input_data:
+            return input_data['user_prompt']
+        elif 'prompt' in input_data:
+            return input_data['prompt']
+        elif 'message' in input_data:
+            return input_data['message']
+        # Add more potential fields as needed
+        return None
+    except Exception:
+        return None
+
+
 def load_development_context(source):
     """Load relevant development context based on session source."""
     context_parts = []
@@ -149,6 +291,8 @@ def main():
                           help='Load development context at session start')
         parser.add_argument('--announce', action='store_true',
                           help='Announce session start via TTS')
+        parser.add_argument('--auto-plan', action='store_true',
+                          help='Automatically create plan for coding tasks')
         args = parser.parse_args()
         
         # Read JSON input from stdin
@@ -161,19 +305,31 @@ def main():
         # Log the session start event
         log_session_start(session_id, input_data)
         
+        # Initialize output
+        output = {
+            "hookSpecificOutput": {
+                "hookEventName": "SessionStart"
+            }
+        }
+        
         # Load development context if requested
         if args.load_context:
             context = load_development_context(source)
             if context:
-                # Using JSON output to add context
-                output = {
-                    "hookSpecificOutput": {
-                        "hookEventName": "SessionStart",
-                        "additionalContext": context
-                    }
-                }
-                print(json.dumps(output))
-                sys.exit(0)
+                output["hookSpecificOutput"]["additionalContext"] = context
+        
+        # Auto-plan functionality
+        if args.auto_plan:
+            user_prompt = get_user_prompt_from_input(input_data)
+            if user_prompt and is_coding_task(user_prompt):
+                plan_info = create_auto_plan(user_prompt)
+                if plan_info:
+                    output["hookSpecificOutput"]["autoPlan"] = plan_info
+        
+        # Output results if we have any
+        if len(output["hookSpecificOutput"]) > 1:  # More than just hookEventName
+            print(json.dumps(output))
+            sys.exit(0)
         
         # Announce session start if requested
         if args.announce:
