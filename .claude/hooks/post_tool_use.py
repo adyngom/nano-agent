@@ -10,6 +10,7 @@ import re
 from pathlib import Path
 from datetime import datetime
 from utils.constants import ensure_session_log_dir
+from utils.commit_templates import create_atomic_commit_message
 
 
 def generate_adw_id():
