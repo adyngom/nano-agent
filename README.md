@@ -31,7 +31,7 @@
 - Install [Astral UV](https://docs.astral.sh/uv/getting-started/installation/)
 - Setup [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview)
 - Setup [Ollama](https://ollama.com/)
-- Get your OpenAI API key and Anthropic API key
+- Get your OpenAI API key, Anthropic API key, and Google API key
 - Setup dotenv
   - `cp ./.env.sample ./.env` and fill out variables
   - `cp ./apps/nano_agent_mcp_server/.env.sample ./apps/nano_agent_mcp_server/.env` and fill out variables
