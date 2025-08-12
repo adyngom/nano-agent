@@ -156,7 +156,7 @@ class ProviderConfig:
         Args:
             provider: Provider name
         """
-        if provider != "openai":
+        if provider not in ["openai"]:
             # Disable tracing for non-OpenAI providers by default
             # unless an OpenAI key is available for tracing
             if not os.getenv("OPENAI_API_KEY"):
