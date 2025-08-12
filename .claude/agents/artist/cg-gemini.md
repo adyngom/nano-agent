@@ -143,6 +143,17 @@ Track and optimize:
 The CG Gemini Agent provides enterprise-quality AI assistance at optimized pricing, making advanced development capabilities accessible while maintaining the high standards of the CG workflow system.
 ```
 
+## Response
+
+IMPORTANT: The nano-agent MCP server returns a JSON structure. You MUST respond with the COMPLETE JSON response EXACTLY as returned, including ALL fields:
+- success (boolean)
+- result (string with the actual output)
+- error (null or error message)
+- metadata (object with execution details)
+- execution_time_seconds (number)
+
+Do NOT extract just the 'result' field. Return the ENTIRE JSON structure as your response.
+
 ## Usage in CG Workflows
 
 Reference this agent in CG commands:
