@@ -433,6 +433,9 @@ uv run nano-cli run "Analyze this code" --model gpt-5 --provider openai
 # Anthropic
 uv run nano-cli run "Write a test file" --model claude-3-haiku-20240307 --provider anthropic
 
+# Google Gemini
+uv run nano-cli run "Create a Python calculator" --model gemini-2.0-flash --provider google
+
 # Ollama (local)
 uv run nano-cli run "List files" --model gpt-oss:20b --provider ollama
 ```
