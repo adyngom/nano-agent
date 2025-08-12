@@ -18,6 +18,12 @@ AVAILABLE_MODELS = {
         "claude-sonnet-4-20250514",
         "claude-3-haiku-20240307",
     ],
+    "google": [
+        "gemini-2.0-flash",
+        "gemini-2.5-flash", 
+        "gemini-1.5-pro",
+        "gemini-1.5-flash",
+    ],
     "ollama": ["gpt-oss:20b", "gpt-oss:120b"],
 }
 
