@@ -402,43 +402,15 @@ def create_atomic_commit(input_data):
         tool_name = input_data.get('tool_name', '')
         tool_input = input_data.get('tool_input', {})
         
-        # Generate commit message based on tool type
-        if tool_name == 'TodoWrite':
-            completed_todos = [
-                todo.get('content', 'task') 
-                for todo in tool_input.get('todos', [])
-                if todo.get('status') == 'completed'
-            ]
-            if completed_todos:
-                commit_msg = f"feat: complete {completed_todos[0][:50]}"
-                if len(completed_todos) > 1:
-                    commit_msg += f" (+{len(completed_todos)-1} more)"
+        # Skip git commands to avoid recursive commits
+        if tool_name == 'Bash' and 'git' in tool_input.get('command', ''):
+            return None
         
-        elif tool_name in ['Write', 'Edit', 'MultiEdit']:
-            file_path = tool_input.get('file_path', 'unknown')
-            file_name = Path(file_path).name if file_path else 'file'
-            
-            if tool_name == 'Write':
-                commit_msg = f"feat: create {file_name}"
-            else:
-                commit_msg = f"feat: update {file_name}"
+        # Generate commit message using templates
+        commit_msg = create_atomic_commit_message(tool_name, tool_input)
         
-        elif tool_name == 'Bash':
-            command = tool_input.get('command', '')
-            if 'test' in command:
-                commit_msg = "test: run tests and verify functionality"
-            elif 'lint' in command or 'typecheck' in command:
-                commit_msg = "style: run linting and type checks"
-            elif 'git' in command:
-                return None  # Skip git commands to avoid recursive commits
-            else:
-                commit_msg = f"chore: execute {command[:30]}"
-        
-        else:
-            commit_msg = f"feat: complete {tool_name} operation"
-        
-        # Add standard atomic commit footer
-        commit_msg += "\n\n🤖 Atomic commit from Claude Code\n\nCo-Authored-By: Claude <noreply@anthropic.com>"
+        if not commit_msg:
+            return None  # No commit message generated
         
         # Create the commit
         subprocess.run(['git', 'add', '.'], capture_output=True, timeout=10)
@@ -455,6 +427,10 @@ def create_atomic_commit(input_data):
                 'atomic_commit_created': True,
                 'commit_message': commit_msg,
                 'commit_hash': commit_result.stdout.strip()
+            }
+        else:
+            return {
+                'atomic_commit_error': commit_result.stderr.strip()
             }
             
     except Exception as e:
