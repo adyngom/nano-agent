@@ -317,9 +317,11 @@ When working with UV and optional dependencies:
 cp .env.sample .env
 ```
 
-2. Add your OpenAI API key:
+2. Add your API keys:
 ```bash
 echo "OPENAI_API_KEY=sk-your-key-here" > .env
+echo "ANTHROPIC_API_KEY=sk-ant-your-key-here" >> .env
+echo "GOOGLE_API_KEY=your-google-key-here" >> .env
 ```
 
 ### Running the Server
