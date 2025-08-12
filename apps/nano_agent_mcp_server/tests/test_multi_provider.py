@@ -237,6 +237,30 @@ class TestProviderConfig:
             assert is_valid is False
             assert "Error checking Ollama availability" in error
     
+    def test_validate_provider_setup_valid_google(self):
+        """Test validation for valid Google setup."""
+        with patch.dict(os.environ, {'GOOGLE_API_KEY': 'test-key'}):
+            is_valid, error = ProviderConfig.validate_provider_setup(
+                "google",
+                "gemini-2.0-flash",
+                AVAILABLE_MODELS,
+                PROVIDER_REQUIREMENTS
+            )
+            assert is_valid is True
+            assert error is None
+    
+    def test_validate_provider_setup_missing_google_api_key(self):
+        """Test validation with missing Google API key."""
+        with patch.dict(os.environ, {}, clear=True):
+            is_valid, error = ProviderConfig.validate_provider_setup(
+                "google",
+                "gemini-2.0-flash",
+                AVAILABLE_MODELS,
+                PROVIDER_REQUIREMENTS
+            )
+            assert is_valid is False
+            assert "Missing environment variable: GOOGLE_API_KEY" in error
+    
     def test_setup_provider_disables_tracing_non_openai(self):
         """Test that tracing is disabled for non-OpenAI providers without key."""
         with patch.dict(os.environ, {}, clear=True), \
