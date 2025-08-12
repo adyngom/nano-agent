@@ -39,14 +39,42 @@ Choose the optimal Gemini model based on task complexity:
 - **gemini-1.5-pro**: Professional-grade for production code and architecture
 - **gemini-1.5-flash**: Fast and efficient for quick tasks and iterations
 
-## Execution Pattern
+## Execute
 
-For all tasks, delegate to the nano-agent MCP server using this pattern:
+For all tasks, delegate to the nano-agent MCP server. Choose the optimal Gemini model based on task complexity:
 
+**Default execution (cost-optimized):**
 ```bash
 mcp__nano-agent__prompt_nano_agent(
-  agentic_prompt="[Detailed task description with context and requirements]",
-  model="gemini-2.0-flash",  # or appropriate model for the task
+  agentic_prompt=PROMPT,
+  model="gemini-1.5-flash",
+  provider="google"
+)
+```
+
+**For complex reasoning tasks:**
+```bash
+mcp__nano-agent__prompt_nano_agent(
+  agentic_prompt=PROMPT,
+  model="gemini-2.5-flash",
+  provider="google"
+)
+```
+
+**For production-grade development:**
+```bash
+mcp__nano-agent__prompt_nano_agent(
+  agentic_prompt=PROMPT,
+  model="gemini-1.5-pro",
+  provider="google"
+)
+```
+
+**For cutting-edge research:**
+```bash
+mcp__nano-agent__prompt_nano_agent(
+  agentic_prompt=PROMPT,
+  model="gemini-2.0-flash",
   provider="google"
 )
 ```
