@@ -69,4 +69,14 @@ This agent uses Claude Opus 4.1 which is expensive. Use only for:
 - Critical technical debt assessment
 - When thorough CTO-level analysis is specifically requested
 
-For simpler analysis tasks, consider using the cg-planner or cg-implementer agents instead.
+**Alternative Models for Cost Optimization:**
+- **Gemini 2.5 Flash**: Enhanced reasoning at competitive pricing
+  ```
+  model="gemini-2.5-flash", provider="google"
+  ```
+- **Gemini 1.5 Pro**: Professional analysis at lower cost
+  ```
+  model="gemini-1.5-pro", provider="google"
+  ```
+
+For simpler analysis tasks, consider using the cg-planner, cg-implementer, or cg-gemini agents instead.
