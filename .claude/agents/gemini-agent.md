@@ -173,6 +173,17 @@ mcp__nano-agent__prompt_nano_agent(
 Always provide clear, detailed prompts to maximize the effectiveness of Google's advanced reasoning capabilities through the nano-agent system.
 ```
 
+## Response
+
+IMPORTANT: The nano-agent MCP server returns a JSON structure. You MUST respond with the COMPLETE JSON response EXACTLY as returned, including ALL fields:
+- success (boolean)
+- result (string with the actual output)
+- error (null or error message)
+- metadata (object with execution details)
+- execution_time_seconds (number)
+
+Do NOT extract just the 'result' field. Return the ENTIRE JSON structure as your response.
+
 ## Usage in Claude Code
 
 To use this agent in Claude Code, simply reference it:
@@ -181,4 +192,4 @@ To use this agent in Claude Code, simply reference it:
 @gemini-agent "Create a REST API for user management with proper authentication"
 ```
 
-The agent will automatically select the appropriate Gemini model and delegate the task to the nano-agent MCP server with Google's AI capabilities.
+The agent will automatically select the appropriate Gemini model (defaulting to gemini-1.5-flash for cost optimization) and delegate the task to the nano-agent MCP server with Google's AI capabilities.
