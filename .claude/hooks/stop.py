@@ -209,43 +209,11 @@ def create_comprehensive_commit(session_id):
         # Get session summary
         session_actions = get_session_summary(session_id)
         
-        # Generate comprehensive commit message
-        if session_actions:
-            # Use the first action as the main subject
-            main_action = session_actions[0]
-            commit_subject = f"feat: {main_action}"
-            
-            # Add details in commit body
-            commit_body_parts = [
-                "Session Summary:",
-                ""
-            ]
-            
-            for i, action in enumerate(session_actions[:5], 1):
-                commit_body_parts.append(f"{i}. {action}")
-            
-            if len(session_actions) > 5:
-                commit_body_parts.append(f"   ... and {len(session_actions) - 5} more changes")
-            
-            commit_body_parts.extend([
-                "",
-                f"Session ID: {session_id}",
-                "",
-                "🚀 Comprehensive session commit from Claude Code",
-                "",
-                "Co-Authored-By: Claude <noreply@anthropic.com>"
-            ])
-            
-            commit_msg = commit_subject + "\n\n" + "\n".join(commit_body_parts)
-        else:
-            # Fallback message
-            commit_msg = f"""feat: comprehensive session update
-
-Session ID: {session_id}
-
-🚀 Comprehensive session commit from Claude Code
-
-Co-Authored-By: Claude <noreply@anthropic.com>"""
+        # Generate comprehensive commit message using templates
+        commit_msg = create_comprehensive_commit_message(
+            session_actions=session_actions,
+            session_id=session_id
+        )
         
         # Create the commit
         subprocess.run(['git', 'add', '.'], capture_output=True, timeout=10)
