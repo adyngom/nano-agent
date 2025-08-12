@@ -97,6 +97,12 @@ uv run nano-cli run "Hello" --model claude-sonnet-4-20250514 --provider anthropi
 uv run nano-cli run "Hello" --model claude-opus-4-20250514 --provider anthropic
 uv run nano-cli run "Hello" --model claude-opus-4-1-20250805 --provider anthropic
 
+# Test Google Gemini models (requires GOOGLE_API_KEY)
+uv run nano-cli run "Create a Python calculator" --model gemini-2.0-flash --provider google
+uv run nano-cli run "Analyze the project structure" --model gemini-1.5-pro --provider google
+uv run nano-cli run "Generate documentation" --model gemini-1.5-flash --provider google
+uv run nano-cli run "Code review this file" --model gemini-2.5-flash --provider google
+
 # Test local Ollama models (requires ollama service) (be sure to install the model first with `ollama pull gpt-oss:20b`)
 uv run nano-cli run "List files" --model gpt-oss:20b --provider ollama
 uv run nano-cli run "List files and count the total number of files and directories" --model gpt-oss:120b --provider ollama
