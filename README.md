@@ -138,6 +138,10 @@ etc...
 @agent-nano-agent-claude-sonnet-4 "<insert agentic prompt here>"
 
 @agent-nano-agent-claude-3-haiku "<insert agentic prompt here>"
+
+@gemini-agent "Create a REST API with proper authentication"
+
+@cg-gemini "Implement user management with cost optimization"
 ```
 
 ### Through the Higher Order Prompt (HOP) and Lower Order Prompt (LOP) pattern
