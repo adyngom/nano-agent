@@ -2,6 +2,52 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ EXTREMELY IMPORTANT: Session Context Management
+
+**CRITICAL WORKFLOW RULE**: At the start of EVERY session, Claude MUST read these documents IN THIS EXACT ORDER to assess current project state and maintain workflow continuity:
+
+### 📋 Required Reading Order (MANDATORY)
+
+1. **CLAUDE_CURRENT_TASK.md** - Current implementation priorities and active tasks
+2. **CG_WORKFLOW_STATE.md** (if exists) - Overall project workflow state and agent coordination history
+3. **CG_WORKFLOW_IMPLEMENTATION_PLAN.md** - Complete agent-centric architecture and implementation strategy
+4. **CG_AGENT_COORDINATION_PROTOCOLS.md** - Agent coordination rules and file-based handoff protocols
+5. **TOP_OF_WORKFLOW_AUTOMATION.md** - Pre-development agent sequence specification
+6. **TOP_OF_WORKFLOW_INTEGRATION.md** - Integration plan for pre-development workflow
+
+### 📋 Project-Specific Context (Read if exists)
+
+7. **PRD_*.md** files - Any existing Product Requirements Documents (if working on active project)
+8. **UX_STRATEGY_*.md** files - Any existing UI/UX Strategy documents (if working on active project)
+9. **CG_TDD_*.md** files - Any existing technical analysis documents (if working on active project)
+
+### 🎯 Context Assessment Protocol
+
+After reading these documents, Claude MUST:
+
+1. **Assess Current Phase**: Determine if project is in pre-development, technical implementation, or deployment phase
+2. **Identify Next Actions**: Based on workflow state, determine immediate next steps
+3. **Update Documentation**: Keep CG_WORKFLOW_STATE.md current with session progress
+4. **Maintain Continuity**: Reference previous decisions and avoid repeating completed work
+
+### 🔄 Session-to-Session Continuity Rules
+
+- **NEVER** start work without reading the context documents
+- **ALWAYS** update CG_WORKFLOW_STATE.md when completing significant actions
+- **PRESERVE** agent coordination history and decision rationale
+- **REFERENCE** previous analysis and avoid redundant work
+- **MAINTAIN** file-based state management across all agent interactions
+
+### 📝 Documentation Update Responsibility
+
+Claude MUST keep these documents current:
+- Update CG_WORKFLOW_STATE.md with new agent executions and progress
+- Log important decisions and their rationale
+- Track which agents have been used and what they produced
+- Note any changes to workflow routing or coordination protocols
+
+**Failure to follow this context management protocol will result in loss of workflow continuity and potential rework of completed tasks.**
+
 ## Project Overview
 
 Nano Agent is an experimental MCP (Model Context Protocol) server for autonomous engineering agents with multi-provider LLM support. It's designed to test and compare agentic capabilities across OpenAI (GPT-5), Anthropic (Claude), and local Ollama models in terms of Performance, Speed, and Cost.
