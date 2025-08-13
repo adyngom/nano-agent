@@ -514,7 +514,15 @@ def write_file(file_path: str, content: str) -> str:
 
 @function_tool
 def list_directory(directory_path: Optional[str] = None) -> str:
-    """List contents of a directory (defaults to current working directory)."""
+    """
+    List contents of a directory (defaults to current working directory).
+    
+    Args:
+        directory_path (str, optional): Path to the directory to list. If not provided, lists current directory.
+    
+    Returns:
+        str: Directory contents listing
+    """
     if directory_path is not None:
         capture_args("list_directory", directory_path=directory_path)
     else:
