@@ -148,3 +148,4 @@ All application code is in `apps/nano_agent_mcp_server/`:
 - `scripts/` - Installation and utility scripts
 
 The project uses Python 3.12+ with uv for dependency management and includes comprehensive type hints throughout.
+- Always create a comprehensive comit after completing a task
