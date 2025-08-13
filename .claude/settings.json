@@ -39,7 +39,7 @@
           "hooks": [
             {
               "type": "command",
-              "command": "uv run /Users/zero2hero/Code/Liveprojects/nano-agent/.claude/hooks/stop.py --chat --commit"
+              "command": "uv run /Users/zero2hero/Code/Liveprojects/nano-agent/.claude/hooks/stop.py --chat"
             }
           ]
         }
