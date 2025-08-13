@@ -486,22 +486,12 @@ def main():
         with open(log_path, 'w') as f:
             json.dump(log_data, f, indent=2)
         
-        # Output results
-        output = {
-            "hookSpecificOutput": {
-                "hookEventName": "PostToolUse"
-            }
-        }
-        
+        # Log results internally (don't output JSON to avoid validation errors)
         if plan_result:
-            output["hookSpecificOutput"]["autoSpecGenerated"] = plan_result
+            logger.info(f"Auto-spec generated: {plan_result}")
         
         if commit_result:
-            output["hookSpecificOutput"]["atomicCommit"] = commit_result
-        
-        # Only output if we have results
-        if len(output["hookSpecificOutput"]) > 1:
-            print(json.dumps(output))
+            logger.info(f"Atomic commit created: {commit_result.get('commit_hash', 'unknown')}")
         
         sys.exit(0)
         
