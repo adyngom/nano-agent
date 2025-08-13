@@ -1,4 +1,4 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env python3
 # /// script
 # requires-python = ">=3.8"
 # ///
@@ -7,7 +7,14 @@ import json
 import os
 import sys
 from pathlib import Path
-from utils.constants import ensure_session_log_dir
+from datetime import datetime
+
+def ensure_session_log_dir(session_id):
+    """Ensure session log directory exists."""
+    current_dir = Path.cwd()
+    log_dir = current_dir / ".claude" / "logs" / session_id
+    log_dir.mkdir(parents=True, exist_ok=True)
+    return log_dir
 
 def main():
     try:
@@ -38,6 +45,7 @@ def main():
         with open(log_path, 'w') as f:
             json.dump(log_data, f, indent=2)
         
+        # Exit cleanly without any JSON output
         sys.exit(0)
         
     except json.JSONDecodeError:

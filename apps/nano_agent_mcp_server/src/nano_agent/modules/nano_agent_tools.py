@@ -513,21 +513,20 @@ def write_file(file_path: str, content: str) -> str:
     return write_file_raw(file_path, content)
 
 @function_tool
-def list_directory(directory_path: Optional[str] = None) -> str:
+def list_directory(directory_path: str = ".") -> str:
     """
-    List contents of a directory (defaults to current working directory).
+    List contents of a directory.
     
     Args:
-        directory_path (str, optional): Path to the directory to list. If not provided, lists current directory.
+        directory_path (str): Path to the directory to list. Use "." for current directory.
     
     Returns:
         str: Directory contents listing
     """
-    if directory_path is not None:
-        capture_args("list_directory", directory_path=directory_path)
-    else:
-        capture_args("list_directory", directory_path="<current working directory>")
-    return list_directory_raw(directory_path)
+    # Convert "." to None for the raw function
+    actual_path = None if directory_path == "." else directory_path
+    capture_args("list_directory", directory_path=directory_path)
+    return list_directory_raw(actual_path)
 
 @function_tool
 def get_file_info(file_path: str) -> str:
