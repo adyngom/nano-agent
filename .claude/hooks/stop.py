@@ -318,15 +318,9 @@ def main():
                 except Exception:
                     pass  # Fail silently
 
-        # Output commit result if applicable
+        # Log commit result internally (don't output JSON to avoid validation errors)
         if commit_result:
-            output = {
-                "hookSpecificOutput": {
-                    "hookEventName": "Stop",
-                    "comprehensiveCommit": commit_result
-                }
-            }
-            print(json.dumps(output))
+            logger.info(f"Comprehensive commit created: {commit_result.get('commit_hash', 'unknown')}")
 
         # Announce completion via TTS only if --notify flag is set
         if args.notify:
