@@ -1,6 +1,6 @@
 ---
-name: cg-gemini
-description: Cost-optimized Google Gemini agent for CG workflow tasks, providing competitive pricing alternative to premium models while maintaining quality output.
+name: gemini-agent-cost-optimizer
+description: Cost-optimized Google Gemini agent for workflow tasks, providing competitive pricing alternative to premium models while maintaining quality output.
 model: gemini
 color: green
 tools: mcp__nano-agent__prompt_nano_agent
