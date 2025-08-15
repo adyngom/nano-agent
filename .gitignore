@@ -95,3 +95,7 @@ deep_specs/
 logs/
 
 .env
+
+# backup files
+BKP-CLAUDE/
+BKP-CLAUDE/*

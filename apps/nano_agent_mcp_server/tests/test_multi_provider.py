@@ -133,6 +133,49 @@ class TestProviderConfig:
             )
             assert agent == mock_agent
     
+    def test_create_agent_google(self):
+        """Test creating a Google Gemini agent."""
+        with patch('nano_agent.modules.provider_config.AsyncOpenAI') as MockOpenAI, \
+             patch('nano_agent.modules.provider_config.OpenAIChatCompletionsModel') as MockModel, \
+             patch('nano_agent.modules.provider_config.Agent') as MockAgent:
+            
+            mock_client = Mock()
+            MockOpenAI.return_value = mock_client
+            
+            mock_model = Mock()
+            MockModel.return_value = mock_model
+            
+            mock_agent = Mock()
+            MockAgent.return_value = mock_agent
+            
+            agent = ProviderConfig.create_agent(
+                name="TestAgent",
+                instructions="Test instructions",
+                tools=[],
+                model="gemini-2.0-flash",
+                provider="google",
+                model_settings=None
+            )
+            
+            MockOpenAI.assert_called_once_with(
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+                api_key=os.getenv("GOOGLE_API_KEY")
+            )
+            
+            MockModel.assert_called_once_with(
+                model="gemini-2.0-flash",
+                openai_client=mock_client
+            )
+            
+            MockAgent.assert_called_once_with(
+                name="TestAgent",
+                instructions="Test instructions",
+                tools=[],
+                model=mock_model,
+                model_settings=None
+            )
+            assert agent == mock_agent
+    
     def test_create_agent_invalid_provider(self):
         """Test creating an agent with invalid provider raises error."""
         with pytest.raises(ValueError, match="Unsupported provider: invalid"):
@@ -193,6 +236,30 @@ class TestProviderConfig:
             )
             assert is_valid is False
             assert "Error checking Ollama availability" in error
+    
+    def test_validate_provider_setup_valid_google(self):
+        """Test validation for valid Google setup."""
+        with patch.dict(os.environ, {'GOOGLE_API_KEY': 'test-key'}):
+            is_valid, error = ProviderConfig.validate_provider_setup(
+                "google",
+                "gemini-2.0-flash",
+                AVAILABLE_MODELS,
+                PROVIDER_REQUIREMENTS
+            )
+            assert is_valid is True
+            assert error is None
+    
+    def test_validate_provider_setup_missing_google_api_key(self):
+        """Test validation with missing Google API key."""
+        with patch.dict(os.environ, {}, clear=True):
+            is_valid, error = ProviderConfig.validate_provider_setup(
+                "google",
+                "gemini-2.0-flash",
+                AVAILABLE_MODELS,
+                PROVIDER_REQUIREMENTS
+            )
+            assert is_valid is False
+            assert "Missing environment variable: GOOGLE_API_KEY" in error
     
     def test_setup_provider_disables_tracing_non_openai(self):
         """Test that tracing is disabled for non-OpenAI providers without key."""

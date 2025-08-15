@@ -18,6 +18,12 @@ AVAILABLE_MODELS = {
         "claude-sonnet-4-20250514",
         "claude-3-haiku-20240307",
     ],
+    "google": [
+        "gemini-2.0-flash",
+        "gemini-2.5-flash", 
+        "gemini-1.5-pro",
+        "gemini-1.5-flash",
+    ],
     "ollama": ["gpt-oss:20b", "gpt-oss:120b"],
 }
 
@@ -31,6 +37,10 @@ MODEL_INFO = {
     "claude-opus-4-20250514": "Claude Opus 4 - Powerful reasoning",
     "claude-sonnet-4-20250514": "Claude Sonnet 4 - Balanced performance",
     "claude-3-haiku-20240307": "Claude 3 Haiku - Fast and efficient",
+    "gemini-2.0-flash": "Gemini 2.0 Flash - Latest Google flagship model",
+    "gemini-2.5-flash": "Gemini 2.5 Flash - Enhanced reasoning capabilities",
+    "gemini-1.5-pro": "Gemini 1.5 Pro - Established professional model",
+    "gemini-1.5-flash": "Gemini 1.5 Flash - Fast and efficient model",
     "gpt-oss:20b": "GPT-OSS 20B - Local open-source model",
     "gpt-oss:120b": "GPT-OSS 120B - Large local model",
 }
@@ -39,6 +49,7 @@ MODEL_INFO = {
 PROVIDER_REQUIREMENTS = {
     "openai": "OPENAI_API_KEY",
     "anthropic": "ANTHROPIC_API_KEY",
+    "google": "GOOGLE_API_KEY",
     "ollama": None,  # No API key needed
 }
 

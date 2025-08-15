@@ -31,7 +31,7 @@
 - Install [Astral UV](https://docs.astral.sh/uv/getting-started/installation/)
 - Setup [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview)
 - Setup [Ollama](https://ollama.com/)
-- Get your OpenAI API key and Anthropic API key
+- Get your OpenAI API key, Anthropic API key, and Google API key
 - Setup dotenv
   - `cp ./.env.sample ./.env` and fill out variables
   - `cp ./apps/nano_agent_mcp_server/.env.sample ./apps/nano_agent_mcp_server/.env` and fill out variables
@@ -97,6 +97,12 @@ uv run nano-cli run "Hello" --model claude-sonnet-4-20250514 --provider anthropi
 uv run nano-cli run "Hello" --model claude-opus-4-20250514 --provider anthropic
 uv run nano-cli run "Hello" --model claude-opus-4-1-20250805 --provider anthropic
 
+# Test Google Gemini models (requires GOOGLE_API_KEY)
+uv run nano-cli run "Create a Python calculator" --model gemini-2.0-flash --provider google
+uv run nano-cli run "Analyze the project structure" --model gemini-1.5-pro --provider google
+uv run nano-cli run "Generate documentation" --model gemini-1.5-flash --provider google
+uv run nano-cli run "Code review this file" --model gemini-2.5-flash --provider google
+
 # Test local Ollama models (requires ollama service) (be sure to install the model first with `ollama pull gpt-oss:20b`)
 uv run nano-cli run "List files" --model gpt-oss:20b --provider ollama
 uv run nano-cli run "List files and count the total number of files and directories" --model gpt-oss:120b --provider ollama
@@ -132,6 +138,10 @@ etc...
 @agent-nano-agent-claude-sonnet-4 "<insert agentic prompt here>"
 
 @agent-nano-agent-claude-3-haiku "<insert agentic prompt here>"
+
+@gemini-agent "Create a REST API with proper authentication"
+
+@cg-gemini "Implement user management with cost optimization"
 ```
 
 ### Through the Higher Order Prompt (HOP) and Lower Order Prompt (LOP) pattern
@@ -170,7 +180,7 @@ This architecture ensures fair comparison by using the same OpenAI Agent SDK for
 
 ## Features
 
-- 🤖 **Multi-Provider Support**: Seamlessly switch between OpenAI (GPT-5), Anthropic (Claude), and Ollama (local models)
+- 🤖 **Multi-Provider Support**: Seamlessly switch between OpenAI (GPT-5), Anthropic (Claude), Google (Gemini), and Ollama (local models)
 - 🔧 **File System Operations**: Read, write, edit, and analyze files autonomously
 - 🏗️ **Nested Agent Architecture**: MCP server spawns internal agents for task execution
 - 🎯 **Unified Interface**: All providers use the same OpenAI SDK for consistency
@@ -311,9 +321,11 @@ When working with UV and optional dependencies:
 cp .env.sample .env
 ```
 
-2. Add your OpenAI API key:
+2. Add your API keys:
 ```bash
 echo "OPENAI_API_KEY=sk-your-key-here" > .env
+echo "ANTHROPIC_API_KEY=sk-ant-your-key-here" >> .env
+echo "GOOGLE_API_KEY=your-google-key-here" >> .env
 ```
 
 ### Running the Server
@@ -408,6 +420,16 @@ The nano agent supports multiple LLM providers through a unified interface using
 - **Implementation**: Uses Anthropic's OpenAI-compatible endpoint
 - **Base URL**: `https://api.anthropic.com/v1/`
 
+#### Google Gemini
+- **Models**: `gemini-2.0-flash`, `gemini-2.5-flash`, `gemini-1.5-pro`, `gemini-1.5-flash`
+- **Requirements**: `GOOGLE_API_KEY` environment variable
+- **Implementation**: Uses Google's OpenAI-compatible endpoint
+- **Base URL**: `https://generativelanguage.googleapis.com/v1beta/openai/`
+- **Special Features**: 
+  - Competitive pricing and cost optimization
+  - Enhanced reasoning capabilities with gemini-2.5-flash
+  - Fast performance with gemini-1.5-flash
+
 #### Ollama (Local Models)
 - **Models**: `gpt-oss:20b`, `gpt-oss:120b`, or any model you've pulled locally
 - **Requirements**: Ollama service running locally
@@ -426,6 +448,9 @@ uv run nano-cli run "Analyze this code" --model gpt-5 --provider openai
 
 # Anthropic
 uv run nano-cli run "Write a test file" --model claude-3-haiku-20240307 --provider anthropic
+
+# Google Gemini
+uv run nano-cli run "Create a Python calculator" --model gemini-2.0-flash --provider google
 
 # Ollama (local)
 uv run nano-cli run "List files" --model gpt-oss:20b --provider ollama
